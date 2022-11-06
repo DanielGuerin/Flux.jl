@@ -13,7 +13,7 @@ noisy = rand(Float32, 2, 1000)                                    # 2×1000 Matr
 truth = map(col -> xor(col...), eachcol(noisy .> 0.5))            # 1000-element Vector{Bool}
 
 # Define our model, a multi-layer perceptron with one hidden layer of size 3:
-model = Chain(Dense(2 => 3, tanh), BatchNorm(3), Dense(3 => 2), softmax)
+model = Chain(Dense(2 , 3, tanh), BatchNorm(3), Dense(3 , 2), softmax)
 
 # The model encapsulates parameters, randomly initialised. Its initial output is:
 out1 = model(noisy)                                               # 2×1000 Matrix{Float32}
@@ -24,7 +24,7 @@ data = Flux.DataLoader((noisy, mat), batchsize=64, shuffle=true);
 first(data) .|> summary                                           # ("2×64 Matrix{Float32}", "2×64 Matrix{Bool}")
 
 pars = Flux.params(model)  # contains references to arrays in model
-opt = Flux.Adam(0.01)      # will store optimiser momentum, etc.
+opt = Flux.ADAM(0.01)      # will store optimiser momentum, etc.
 
 # Training loop, using the whole data set 1000 times:
 for epoch in 1:1_000
